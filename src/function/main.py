@@ -59,11 +59,14 @@ def get_tweets(publisher_client, topic_path, since_id,keyword, depth=0, next_tok
 
     token = get_auth_headercreds()
     auth_header = {'Authorization' : 'Bearer %s' % token }
-    base_url = 'https://api.twitter.com/2/tweets/search/recent?max_results=100&expansions=author_id&tweet.fields=created_at'
-    base_url = '%s&query=%s -is:retweet&since_id=%s' % (base_url, keyword,since_id)
+    if since_id:
+        base_url = 'https://api.twitter.com/2/tweets/search/recent?max_results=100&expansions=author_id&tweet.fields=created_at'
+        base_url = '%s&query=%s -is:retweet&since_id=%s' % (base_url, keyword,since_id)
+    else:
+        base_url = 'https://api.twitter.com/2/tweets/search/recent?max_results=100&expansions=author_id&tweet.fields=created_at&query=%s' % keyword
     
     # Next token will be passed in during pagination if need
-    if next_token != None:
+    if next_token:
         base_url = '%s&next_token=%s' % (base_url, next_token)
 
     resp = requests.get(base_url, headers=auth_header).json()
@@ -108,7 +111,10 @@ def main(event_data, context):
     encoding = topic.schema_settings.encoding
 
     storage_client = storage.Client(os.environ['GOOGLE_PROJECT_ID'])
-    last_ingested_tweet = get_checkpoint(storage_client)
+    try:
+        last_ingested_tweet = get_checkpoint(storage_client)
+    except AttributeError as e:
+        last_ingested_tweet = None
 
     tweets = get_tweets(publisher, topic_path, last_ingested_tweet, 'cobaltstrike')
 
