@@ -1,0 +1,22 @@
+[
+    {
+        "name": "id",
+        "type": "STRING"
+    },
+    {
+        "name": "created_at",
+        "type": "STRING"
+    },
+    {
+        "name": "created_at_epoch",
+        "type": "INT64"
+    },
+    {
+        "name": "text",
+        "type": "STRING"
+    },
+    {
+        "name": "author_id",
+        "type": "STRING"
+    }
+]

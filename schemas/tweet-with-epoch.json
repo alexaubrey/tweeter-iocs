@@ -1,0 +1,26 @@
+{
+    "type": "record",
+    "name": "Avro",
+    "fields": [
+      {
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "name": "created_at",
+        "type": "string"
+      },
+      {
+        "name": "created_at_epoch",
+        "type": "long"
+      },
+      {
+        "name": "text",
+        "type": "string"
+      },
+      {
+        "name": "author_id",
+        "type": "string"
+      }
+    ]
+}
